@@ -93,8 +93,19 @@ Promises:
 
 */
 void UserAppRun(void)
-{
-
+{ 
+    for (u8 i = 0; i < 64; i++)
+    {
+        LATA &= 0x80; // set RA7 high 
+        LATA |= i;  //copy counter to LATA
+        
+        //buffer 
+        u32 u32Counter = 300000; 
+        while (u32Counter > 0)
+        {
+            u32Counter--;
+        }
+    }
 
 } /* end UserAppRun */
 

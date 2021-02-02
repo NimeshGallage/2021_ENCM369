@@ -27315,6 +27315,17 @@ void UserAppInitialize(void)
 # 95 "user_app.c"
 void UserAppRun(void)
 {
+    for (u8 i = 0; i < 64; i++)
+    {
+        LATA &= 0x80;
+        LATA |= i;
 
+
+        u32 u32Counter = 300000;
+        while (u32Counter > 0)
+        {
+            u32Counter--;
+        }
+    }
 
 }
