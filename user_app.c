@@ -93,21 +93,28 @@ Promises:
 
 */
 void UserAppRun(void)
-{ 
-    for (u8 i = 0; i < 64; i++)
+{
+  if(LATA == 0x3F)//LED reset after maxing out first 6bits
     {
-        LATA &= 0x80; // set RA7 high 
-        LATA |= i;  //copy counter to LATA
-        
-        //buffer 
-        u32 u32Counter = 300000; 
+        LATA = 0x80; 
+    }  
+  if((PORTB&0x20) == 0x20) { //checking for RB5 high
+      LATA++;
+      u32 u32Counter = 290000; //~250ms delay to make sure only one increment happens
         while (u32Counter > 0)
         {
             u32Counter--;
         }
-    }
-
+  }
 } /* end UserAppRun */
+   
+
+    //for (u8 i = 0; i < 64; i++)
+    //{
+      //  LATA &= 0x80; 
+      //  LATA |= i; 
+    //}
+/* end UserAppRun */
 
 
 

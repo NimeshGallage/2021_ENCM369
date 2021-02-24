@@ -88,11 +88,18 @@ Promises:
 */
 void GpioSetup(void)
 {
-    PORTA = 0x00; // Clear A ports
-    ANSELA = 0x00; // Enable digital output for A ports
-    TRISA = 0x00; // Set all A ports as OUTPUT
+    LATA=0x00;      // Clear Data Latch
+    PORTA=0x00;     // Clear register data
+    TRISA=0x00;     // Set RA as all outputs 
+    ANSELA=0x00;    // Enable digital drivers
+    LATA=0x80;      // Last LED high
+
+    LATB=0x00;      // Clear Data Latch
+    PORTB= 0x00;    // Clear register data
+    TRISB= 0x20;    // Set RB 5 to input
+    ANSELB= 0x00;   // Enable digital drivers  
     
-    LATA = 0x80; // b'1000 0000 turn on error LED
+    
 } /* end GpioSetup() */
 
 

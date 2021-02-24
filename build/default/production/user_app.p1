@@ -2,6 +2,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "45585 D:/MPLABX IDE/packs/Microchip/PIC18F-Q_DFP/1.8.154/xc8\pic\include\proc\pic18f27q43.h
 [; ;D:/MPLABX IDE/packs/Microchip/PIC18F-Q_DFP/1.8.154/xc8\pic\include\proc\pic18f27q43.h: 45585: extern volatile unsigned char LATA __attribute__((address(0x4BE)));
 [v _LATA `Vuc ~T0 @X0 0 e@1214 ]
+"46157
+[; ;D:/MPLABX IDE/packs/Microchip/PIC18F-Q_DFP/1.8.154/xc8\pic\include\proc\pic18f27q43.h: 46157: extern volatile unsigned char PORTB __attribute__((address(0x4CF)));
+[v _PORTB `Vuc ~T0 @X0 0 e@1231 ]
 "30 ./configuration.h
 [p x FEXTOSC  =  OFF     ]
 "31
@@ -2547,30 +2550,33 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U _UserAppRun ]
 [f ]
 "97
-[; ;user_app.c: 97:     for (u8 i = 0; i < 64; i++)
-{
-[v _i `uc ~T0 @X0 1 a ]
-[e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 64 `i 2274  ]
-[e $U 2275  ]
-[e :U 2274 ]
+[; ;user_app.c: 97:   if(LATA == 0x3F)
+[e $ ! == -> _LATA `i -> 63 `i 2274  ]
 "98
 [; ;user_app.c: 98:     {
 {
 "99
-[; ;user_app.c: 99:         LATA &= 0x80;
-[e =& _LATA -> -> 128 `i `Vuc ]
+[; ;user_app.c: 99:         LATA = 0x80;
+[e = _LATA -> -> 128 `i `uc ]
 "100
-[; ;user_app.c: 100:         LATA |= i;
-[e =| _LATA -> _i `Vuc ]
+[; ;user_app.c: 100:     }
+}
+[e :U 2274 ]
+"101
+[; ;user_app.c: 101:   if((PORTB&0x20) == 0x20) {
+[e $ ! == & -> _PORTB `i -> 32 `i -> 32 `i 2275  ]
+{
+"102
+[; ;user_app.c: 102:       LATA++;
+[e ++ _LATA -> -> 1 `i `Vuc ]
 "103
-[; ;user_app.c: 103:         u32 u32Counter = 300000;
+[; ;user_app.c: 103:       u32 u32Counter = 290000;
 [v _u32Counter `ul ~T0 @X0 1 a ]
-[e = _u32Counter -> -> 300000 `l `ul ]
+[e = _u32Counter -> -> 290000 `l `ul ]
 "104
 [; ;user_app.c: 104:         while (u32Counter > 0)
-[e $U 2277  ]
-[e :U 2278 ]
+[e $U 2276  ]
+[e :U 2277 ]
 "105
 [; ;user_app.c: 105:         {
 {
@@ -2580,19 +2586,16 @@ Version 4.0 HI-TECH Software Intermediate Code
 "107
 [; ;user_app.c: 107:         }
 }
-[e :U 2277 ]
+[e :U 2276 ]
 "104
 [; ;user_app.c: 104:         while (u32Counter > 0)
-[e $ > _u32Counter -> -> -> 0 `i `l `ul 2278  ]
-[e :U 2279 ]
+[e $ > _u32Counter -> -> -> 0 `i `l `ul 2277  ]
+[e :U 2278 ]
 "108
-[; ;user_app.c: 108:     }
+[; ;user_app.c: 108:   }
 }
-[e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 64 `i 2274  ]
 [e :U 2275 ]
-}
-"110
-[; ;user_app.c: 110: }
+"109
+[; ;user_app.c: 109: }
 [e :UE 2273 ]
 }
