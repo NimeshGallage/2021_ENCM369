@@ -27273,7 +27273,9 @@ typedef enum {ACTIVE_LOW = 0, ACTIVE_HIGH = 1} GpioActiveType;
 
 
 # 1 "./encm369_pic18.h" 1
-# 60 "./encm369_pic18.h"
+# 58 "./encm369_pic18.h"
+void TimeXus(u16 u16Mircoseconds);
+# 77 "./encm369_pic18.h"
 void ClockSetup(void);
 void GpioSetup(void);
 
@@ -27290,7 +27292,7 @@ void SystemSleep(void);
 void UserAppInitialize(void);
 void UserAppRun(void);
 # 106 "./configuration.h" 2
-# 24 "encm369_pic18.c" 2
+# 25 "encm369_pic18.c" 2
 # 37 "encm369_pic18.c"
 extern volatile u32 G_u32SystemTime1ms;
 extern volatile u32 G_u32SystemTime1s;
@@ -27304,21 +27306,44 @@ void ClockSetup(void)
 # 89 "encm369_pic18.c"
 void GpioSetup(void)
 {
-    PORTA = 0x00;
-    ANSELA = 0x00;
     TRISA = 0x00;
-
+    ANSELA = 0x00;
     LATA = 0x80;
+
+    TRISB = 0xFF;
+    ANSELB = 0x00;
+
 }
-# 111 "encm369_pic18.c"
+# 113 "encm369_pic18.c"
 void SysTickSetup(void)
 {
   G_u32SystemTime1ms = 0;
   G_u32SystemTime1s = 0;
 
 }
-# 133 "encm369_pic18.c"
+# 135 "encm369_pic18.c"
 void SystemSleep(void)
 {
+
+}
+# 157 "encm369_pic18.c"
+void TimeXus(u16 u16Microseconds)
+{
+    T0CON0 = T0CON0 & 0x7F;
+
+    u16 u16InputDifference = 0xFFFF - u16Microseconds;
+
+    u8 u8InputLow = u16InputDifference & 0xFF;
+    u8 u8InputHigh = (u16InputDifference >> 8) & 0xFF;
+    TMR0L = u8InputLow;
+    TMR0H = u8InputHigh;
+
+    PIR3 = PIR3 & 0x7F;
+
+    T0CON0 = T0CON0 | 0x80;
+
+    while((PIR3 & 0x80) != 0x80)
+    {
+    }
 
 }

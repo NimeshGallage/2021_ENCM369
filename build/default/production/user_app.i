@@ -27273,7 +27273,9 @@ typedef enum {ACTIVE_LOW = 0, ACTIVE_HIGH = 1} GpioActiveType;
 
 
 # 1 "./encm369_pic18.h" 1
-# 60 "./encm369_pic18.h"
+# 58 "./encm369_pic18.h"
+void TimeXus(u16 u16Mircoseconds);
+# 77 "./encm369_pic18.h"
 void ClockSetup(void);
 void GpioSetup(void);
 
@@ -27290,8 +27292,7 @@ void SystemSleep(void);
 void UserAppInitialize(void);
 void UserAppRun(void);
 # 106 "./configuration.h" 2
-# 26 "user_app.c" 2
-
+# 27 "user_app.c" 2
 
 
 
@@ -27309,23 +27310,45 @@ extern volatile u32 G_u32SystemFlags;
 # 76 "user_app.c"
 void UserAppInitialize(void)
 {
-
+    LATA = 0x81;
+    T0CON0 = 0x90;
+    T0CON1 = 0x54;
 
 }
-# 95 "user_app.c"
+# 97 "user_app.c"
 void UserAppRun(void)
 {
-    for (u8 i = 0; i < 64; i++)
+    static u16 su16Counter = 0x0000;
+    u8 u8LataValue;
+    static u8 su8LataDirection = 0x00;
+
+    if(su16Counter == 0x01F4)
     {
-        LATA &= 0x80;
-        LATA |= i;
+        su16Counter = 0x0000;
+        u8LataValue = LATA & 0x7F;
 
-
-        u32 u32Counter = 300000;
-        while (u32Counter > 0)
+        if(su8LataDirection == 0x00)
         {
-            u32Counter--;
+            u8LataValue = u8LataValue << 1;
+        }
+
+        if(su8LataDirection == 0x01)
+        {
+            u8LataValue = u8LataValue >> 1;
+        }
+
+        LATA = u8LataValue | 0x80;
+
+        if(u8LataValue == 0x20)
+        {
+            su8LataDirection = 1;
+        }
+
+        if(u8LataValue == 0x01)
+        {
+            su8LataDirection = 0;
         }
     }
+    su16Counter++;
 
 }

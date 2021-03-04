@@ -44,7 +44,24 @@ Type Definitions
 #define HEARTBEAT_ON()          /*!< @brief Turns on Heartbeat LED */
 #define HEARTBEAT_OFF()         /*!< @brief Turns off Heartbeat LED */
 
+/*--------------------------------------------------------------------
+void TimeXus(INPUT_PARAMETER_)
+Sets Timer0 to count u16Microseconds_
+Requires:
+- Timer0 configured such that each timer tick is 1 microsecond
+- INPUT_PARAMETER_ is the value in microseconds to time from 1 to 65535
+Promises:
+- Pre-loads TMR0H:L to clock out desired period
+- TMR0IF cleared
+- Timer0 enabled
+*/
+void TimeXus(u16 u16Mircoseconds);
 
+/* OPTIONAL: range check and handle edge cases */
+/* Disable the timer during config */
+/* Preload TMR0H and TMR0L based on u16TimeXus */
+/* Clear TMR0IF and enable Timer 0 */
+ /* end TimeXus () */
 /***********************************************************************************************************************
 &&&&& Function Declarations
 ***********************************************************************************************************************/

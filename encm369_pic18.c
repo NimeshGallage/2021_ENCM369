@@ -88,11 +88,13 @@ Promises:
 */
 void GpioSetup(void)
 {
-    PORTA = 0x00; // Clear A ports
-    ANSELA = 0x00; // Enable digital output for A ports
-    TRISA = 0x00; // Set all A ports as OUTPUT
+    TRISA = 0x00;   //set LATA to outputs
+    ANSELA = 0x00;  //set LATA to digital
+    LATA = 0x80;    //set RA7 and RA0 on, the rest off
     
-    LATA = 0x80; // b'1000 0000 turn on error LED
+    TRISB = 0xFF;   //set PORTB to all inputs 
+    ANSELB = 0x00;  //set PORTB to digital
+    
 } /* end GpioSetup() */
 
 
@@ -134,6 +136,44 @@ void SystemSleep(void)
 {    
   
 } /* end SystemSleep(void) */
+
+
+
+/*!---------------------------------------------------------------------------------------------------------------------
+@fn void TimeXus(u16 u16Microseconds)
+
+@brief Sets Timer0 to count u16Microseconds 
+
+
+Requires:
+- Timer0 configured such that each timer tick is 1 microseconds
+- u16Microseconds is the value in microseconds to time from 1 to 65,535
+ * 
+Promises:
+- Pre-loads TMR0H:L to clock out desired period
+- TMROIF cleared
+- Timer0 enabled
+*/
+void TimeXus(u16 u16Microseconds)
+{    
+    T0CON0 = T0CON0 & 0x7F;   //sets Timer0 Enable low
+    
+    u16 u16InputDifference = 0xFFFF - u16Microseconds;  //find remaining time before overflow
+    
+    u8 u8InputLow = u16InputDifference & 0xFF;   //bitmask 8 LSBs
+    u8 u8InputHigh = (u16InputDifference >> 8) & 0xFF;  //bitmask 8 MSBs
+    TMR0L = u8InputLow;  //preload Timer0 8 LSBs
+    TMR0H = u8InputHigh; //preload Timer0 8 MSBs
+    
+    PIR3 = PIR3 & 0x7F;  //sets TMR0IF low
+    
+    T0CON0 = T0CON0 | 0x80;  //sets Timer0 Enable high
+    
+    while((PIR3 & 0x80) != 0x80)
+    {
+    }
+    
+} /* end TimeXus(u16 u16Microseconds) */
 
 
 

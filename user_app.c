@@ -75,7 +75,9 @@ Promises:
 */
 void UserAppInitialize(void)
 {
-
+    LATA = 0x81;  //Initialize LEDs
+    T0CON0 = 0x90; //Set enable, 16-bit, postscaler
+    T0CON1 = 0x54; //Set clock source, asynchronous, prescaler
 
 } /* end UserAppInitialize() */
 
@@ -93,19 +95,39 @@ Promises:
 
 */
 void UserAppRun(void)
-{ 
-    for (u8 i = 0; i < 64; i++)
+{
+    static u16 su16Counter = 0x0000;
+    u8 u8LataValue;
+    static u8 su8LataDirection = 0x00;   //0 shifts left, 1 shifts right
+
+    if(su16Counter == 0x01F4)   //if = 500, or 1ms total
     {
-        LATA &= 0x80; // set RA7 high 
-        LATA |= i;  //copy counter to LATA
+        su16Counter = 0x0000;  //reset counter
+        u8LataValue = LATA & 0x7F;  //bitmask LATA without Heartbeat LED
         
-        //buffer 
-        u32 u32Counter = 300000; 
-        while (u32Counter > 0)
+        if(su8LataDirection == 0x00) //shifting left
         {
-            u32Counter--;
+            u8LataValue = u8LataValue << 1; 
+        }
+        
+        if(su8LataDirection == 0x01) //shifting right
+        {
+            u8LataValue = u8LataValue >> 1;
+        }
+        
+        LATA = u8LataValue | 0x80;  //give value back to LATA
+        
+        if(u8LataValue == 0x20) //furthest left
+        {
+            su8LataDirection = 1; //direction direction
+        }
+        
+        if(u8LataValue == 0x01) //furthest right
+        {
+            su8LataDirection = 0; //change direction
         }
     }
+    su16Counter++;
 
 } /* end UserAppRun */
 

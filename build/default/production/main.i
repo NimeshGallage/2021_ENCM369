@@ -27277,7 +27277,9 @@ typedef enum {ACTIVE_LOW = 0, ACTIVE_HIGH = 1} GpioActiveType;
 
 
 # 1 "./encm369_pic18.h" 1
-# 60 "./encm369_pic18.h"
+# 58 "./encm369_pic18.h"
+void TimeXus(u16 u16Mircoseconds);
+# 77 "./encm369_pic18.h"
 void ClockSetup(void);
 void GpioSetup(void);
 
@@ -27335,6 +27337,7 @@ void main(void)
 
                    ;
     SystemSleep();
+    TimeXus(500);
                   ;
 
   }
