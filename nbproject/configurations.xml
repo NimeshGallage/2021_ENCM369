@@ -4,11 +4,11 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>configuration.h</itemPath>
       <itemPath>encm369_pic18.h</itemPath>
       <itemPath>main.h</itemPath>
       <itemPath>typedefs.h</itemPath>
       <itemPath>user_app.h</itemPath>
+      <itemPath>configuration.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -203,7 +203,7 @@
         <property key="memories.programmemory.ranges" value="0-1ffff"/>
         <property key="memories.rww" value="true"/>
         <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoImageName" value="PIC_Activity3_ptg"/>
+        <property key="programmerToGoImageName" value="PIC_Activity5_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.ledbrightness" value="5"/>

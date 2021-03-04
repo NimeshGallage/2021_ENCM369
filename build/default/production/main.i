@@ -27335,10 +27335,10 @@ void main(void)
 
 
 
-                   ;
+    (LATA &= 0x7F);
     SystemSleep();
     TimeXus(500);
-                  ;
+    (LATA |= 0x80);
 
   }
 
